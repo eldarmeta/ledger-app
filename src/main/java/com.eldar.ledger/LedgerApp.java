@@ -81,6 +81,7 @@ public class LedgerApp {
             System.out.println("A) All Transactions");
             System.out.println("D) Only Deposits");
             System.out.println("P) Only Payments");
+            System.out.println("R) Reports");
             System.out.println("H) Home");
             System.out.print("Choose option: ");
             String input = scanner.nextLine();
@@ -100,6 +101,9 @@ public class LedgerApp {
                     System.out.println("\n*PAYMENTS ONLY*");
                     for (Transaction t : all) if (t.getAmount() < 0) System.out.println(t);
                     break;
+                case "R":
+                    showReportsMenu();
+                    break;
                 case "H":
                     viewing = false;
                     break;
@@ -107,5 +111,19 @@ public class LedgerApp {
                     System.out.println("Invalid option. Try again.");
             }
         }
+    }
+
+    private void showReportsMenu() {
+        System.out.println("\n***** Reports Menu *****");
+        System.out.println("1) Month To Date");
+        System.out.println("2) Previous Month");
+        System.out.println("3) Year To Date");
+        System.out.println("4) Previous Year");
+        System.out.println("5) Search by Vendor");
+        System.out.println("0) Back to Ledger");
+        System.out.print("Choose option: ");
+
+        String input = scanner.nextLine();
+        System.out.println("[REPORT] Selected: " + input + " (placeholder — logic coming soon)");
     }
 }
