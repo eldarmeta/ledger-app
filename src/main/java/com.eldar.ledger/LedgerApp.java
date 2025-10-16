@@ -36,11 +36,7 @@ public class LedgerApp {
                     System.out.println("Payment recorded.");
                     break;
                 case "L":
-                    System.out.println("*LEDGER* Showing all transactions:");
-                    List<Transaction> all = repo.getAll();
-                    for (Transaction tx : all) {
-                        System.out.println(tx);
-                    }
+                    showLedgerMenu();
                     break;
                 case "X":
                     running = false;
@@ -76,5 +72,40 @@ public class LedgerApp {
         }
 
         return new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+    }
+
+    private void showLedgerMenu() {
+        boolean viewing = true;
+        while (viewing) {
+            System.out.println("\n***** Ledger Menu *****");
+            System.out.println("A) All Transactions");
+            System.out.println("D) Only Deposits");
+            System.out.println("P) Only Payments");
+            System.out.println("H) Home");
+            System.out.print("Choose option: ");
+            String input = scanner.nextLine();
+
+            List<Transaction> all = repo.getAll();
+
+            switch (input.toUpperCase()) {
+                case "A":
+                    System.out.println("\n*ALL TRANSACTIONS*");
+                    for (Transaction t : all) System.out.println(t);
+                    break;
+                case "D":
+                    System.out.println("\n*DEPOSITS ONLY*");
+                    for (Transaction t : all) if (t.getAmount() > 0) System.out.println(t);
+                    break;
+                case "P":
+                    System.out.println("\n*PAYMENTS ONLY*");
+                    for (Transaction t : all) if (t.getAmount() < 0) System.out.println(t);
+                    break;
+                case "H":
+                    viewing = false;
+                    break;
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
+        }
     }
 }
