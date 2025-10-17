@@ -1,4 +1,4 @@
-package repo;
+package com.eldar.ledger.repo;
 
 import java.util.List;
 

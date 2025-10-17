@@ -1,6 +1,6 @@
-package service;
+package com.eldar.ledger.service;
 
-import repo.Transaction;
+import com.eldar.ledger.repo.Transaction;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

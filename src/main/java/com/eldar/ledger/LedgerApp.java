@@ -1,9 +1,9 @@
 package com.eldar.ledger;
 
-import repo.CSVTransactionRepo;
-import repo.Transaction;
-import repo.TransactionRepository;
-import service.ReportService;
+import com.eldar.ledger.repo.CSVTransactionRepo;
+import com.eldar.ledger.repo.Transaction;
+import com.eldar.ledger.repo.TransactionRepository;
+import com.eldar.ledger.service.ReportService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -29,7 +29,7 @@ public class LedgerApp {
             printHomeScreen();
             String input = scanner.nextLine();
 
-            switch (input.toUpperCase()) {
+            switch (input.toUpperCase().trim()) {
                 case "D":
                     System.out.println("*ADD DEPOSIT*");
                     Transaction deposit = createTransaction(true);
@@ -66,13 +66,13 @@ public class LedgerApp {
 
     private Transaction createTransaction(boolean isDeposit) {
         System.out.print("Enter description: ");
-        String description = scanner.nextLine();
+        String description = scanner.nextLine().trim();
 
         System.out.print("Enter vendor: ");
-        String vendor = scanner.nextLine();
+        String vendor = scanner.nextLine().trim();
 
         System.out.print("Enter amount: ");
-        double amount = Double.parseDouble(scanner.nextLine());
+        double amount = Double.parseDouble(scanner.nextLine().trim());
 
         if (!isDeposit) {
             amount *= -1;
@@ -95,7 +95,7 @@ public class LedgerApp {
 
             List<Transaction> all = repo.getAll();
 
-            switch (input.toUpperCase()) {
+            switch (input.toUpperCase().trim()) {
                 case "A":
                     System.out.println("\n*ALL TRANSACTIONS*");
                     for (Transaction t : all) System.out.println(t);
@@ -133,7 +133,7 @@ public class LedgerApp {
             System.out.println("0) Back to Ledger");
             System.out.print("Choose option: ");
 
-            String input = scanner.nextLine();
+            String input = scanner.nextLine().trim();
             List<Transaction> all = repo.getAll();
             List<Transaction> result = new ArrayList<>();
 
@@ -152,7 +152,7 @@ public class LedgerApp {
                     break;
                 case "5":
                     System.out.print("Enter vendor name: ");
-                    String vendor = scanner.nextLine();
+                    String vendor = scanner.nextLine().trim();
                     result = reportService.filterByVendor(all, vendor);
                     break;
                 case "6":

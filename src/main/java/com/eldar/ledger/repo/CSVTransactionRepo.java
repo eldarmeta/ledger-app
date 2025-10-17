@@ -1,4 +1,4 @@
-package repo;
+package com.eldar.ledger.repo;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -45,7 +45,7 @@ public class CSVTransactionRepo implements TransactionRepository {
             bw.close();
             fw.close();
         } catch (IOException e) {
-            System.out.println("*ERROR* Could not write transaction: " + e.getMessage());
+            System.out.println("*|*ERROR*|* Could not write transaction: " + e.getMessage());
         }
     }
 
@@ -79,7 +79,13 @@ public class CSVTransactionRepo implements TransactionRepository {
         } catch (IOException e) {
             System.out.println("*ERROR* Could not read transactions: " + e.getMessage());
         }
+        List<Transaction> reversed = new ArrayList<>();
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            reversed.add(transactions.get(i));
+        }
+        transactions = reversed;
 
         return transactions;
+
     }
 }
