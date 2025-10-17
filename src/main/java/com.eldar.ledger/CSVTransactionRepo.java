@@ -6,7 +6,8 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class CSVTransactionRepo implements TransactionRepository {
-    private String filePath;
+    private final String filePath;
+    private final String HEADER = "Date|Time|Description|Vendor|Amount";
 
     public CSVTransactionRepo(String filePath) {
         this.filePath = filePath;
@@ -15,6 +16,12 @@ public class CSVTransactionRepo implements TransactionRepository {
         if (!file.exists()) {
             try {
                 file.createNewFile();
+                FileWriter fw = new FileWriter(filePath, true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(HEADER);
+                bw.newLine();
+                bw.close();
+                fw.close();
             } catch (IOException e) {
                 System.out.println("*ERROR* Could not create file: " + e.getMessage());
             }
@@ -24,12 +31,17 @@ public class CSVTransactionRepo implements TransactionRepository {
     @Override
     public void add(Transaction transaction) {
         try {
+            boolean addHeader = new File(filePath).length() == 0;
             FileWriter fw = new FileWriter(filePath, true);
             BufferedWriter bw = new BufferedWriter(fw);
 
+            if (addHeader) {
+                bw.write(HEADER);
+                bw.newLine();
+            }
+
             bw.write(transaction.toCSV());
             bw.newLine();
-
             bw.close();
             fw.close();
         } catch (IOException e) {
@@ -44,6 +56,8 @@ public class CSVTransactionRepo implements TransactionRepository {
         try {
             FileReader fr = new FileReader(filePath);
             BufferedReader br = new BufferedReader(fr);
+
+            String headerLine = br.readLine();
 
             String line;
             while ((line = br.readLine()) != null) {
