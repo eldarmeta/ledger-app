@@ -2,6 +2,7 @@ package com.eldar.ledger;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ReportService {
@@ -73,5 +74,25 @@ public class ReportService {
         }
 
         return result;
+    }
+
+    public void showVendorSummary(List<Transaction> transactions) {
+        HashMap<String, Double> vendorTotals = new HashMap<>();
+
+        for (Transaction t : transactions) {
+            String vendor = t.getVendor();
+            double amount = t.getAmount();
+
+            if (vendorTotals.containsKey(vendor)) {
+                vendorTotals.compute(vendor, (k, currentTotal) -> currentTotal + amount);
+            } else {
+                vendorTotals.put(vendor, amount);
+            }
+        }
+
+        System.out.println("\n***  Vendor Summary Report  ***");
+        for (String vendor : vendorTotals.keySet()) {
+            System.out.printf("%s: %.2f\n", vendor, vendorTotals.get(vendor));
+        }
     }
 }

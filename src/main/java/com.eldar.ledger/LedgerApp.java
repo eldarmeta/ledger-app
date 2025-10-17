@@ -124,6 +124,7 @@ public class LedgerApp {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search by Vendor");
+            System.out.println("6) Vendor Summary (Total by Vendor)");
             System.out.println("0) Back to Ledger");
             System.out.print("Choose option: ");
 
@@ -149,6 +150,9 @@ public class LedgerApp {
                     String vendor = scanner.nextLine();
                     result = reportService.filterByVendor(all, vendor);
                     break;
+                case "6":
+                    reportService.showVendorSummary(all);
+                    break;
                 case "0":
                     viewing = false;
                     continue;
@@ -157,9 +161,11 @@ public class LedgerApp {
                     continue;
             }
 
-            System.out.println("\n=== Report Results ===");
-            for (Transaction t : result) {
-                System.out.println(t);
+            if (!result.isEmpty()) {
+                System.out.println("\n=== Report Results ===");
+                for (Transaction t : result) {
+                    System.out.println(t);
+                }
             }
         }
     }
