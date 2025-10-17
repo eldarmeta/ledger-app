@@ -2,6 +2,7 @@ package com.eldar.ledger;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,6 +13,7 @@ public class LedgerApp {
         app.run();
     }
 
+    private final ReportService reportService = new ReportService();
     private final Scanner scanner = new Scanner(System.in);
     private final TransactionRepository repo = new CSVTransactionRepo("transactions.csv");
 
@@ -114,16 +116,51 @@ public class LedgerApp {
     }
 
     private void showReportsMenu() {
-        System.out.println("\n***** Reports Menu *****");
-        System.out.println("1) Month To Date");
-        System.out.println("2) Previous Month");
-        System.out.println("3) Year To Date");
-        System.out.println("4) Previous Year");
-        System.out.println("5) Search by Vendor");
-        System.out.println("0) Back to Ledger");
-        System.out.print("Choose option: ");
+        boolean viewing = true;
+        while (viewing) {
+            System.out.println("\n***** Reports Menu *****");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("0) Back to Ledger");
+            System.out.print("Choose option: ");
 
-        String input = scanner.nextLine();
-        System.out.println("[REPORT] Selected: " + input + " (placeholder — logic coming soon)");
+            String input = scanner.nextLine();
+            List<Transaction> all = repo.getAll();
+            List<Transaction> result = new ArrayList<>();
+
+            switch (input) {
+                case "1":
+                    result = reportService.filterMonthToDate(all);
+                    break;
+                case "2":
+                    result = reportService.filterPreviousMonth(all);
+                    break;
+                case "3":
+                    result = reportService.filterYearToDate(all);
+                    break;
+                case "4":
+                    result = reportService.filterPreviousYear(all);
+                    break;
+                case "5":
+                    System.out.print("Enter vendor name: ");
+                    String vendor = scanner.nextLine();
+                    result = reportService.filterByVendor(all, vendor);
+                    break;
+                case "0":
+                    viewing = false;
+                    continue;
+                default:
+                    System.out.println("Invalid option.");
+                    continue;
+            }
+
+            System.out.println("\n=== Report Results ===");
+            for (Transaction t : result) {
+                System.out.println(t);
+            }
+        }
     }
 }
