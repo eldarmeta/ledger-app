@@ -1,4 +1,4 @@
-package com.eldar.ledger;
+package repo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
